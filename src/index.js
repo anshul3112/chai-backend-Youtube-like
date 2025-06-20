@@ -1,10 +1,24 @@
 //Second approach for DB connection -- RECOMMENDED :
 import dotenv from 'dotenv'
-import express from 'express'
 import connectDB from './db/dbindex.js';
-dotenv.config();
+import {app} from './app.js';
+dotenv.config(); 
 
-connectDB();
+connectDB()
+.then(() => {
+
+    app.on("errror" , (error) => {
+            console.log("Error occured" , error);
+            throw error;
+    });
+
+    app.listen(process.env.PORT || 8000, ()=> {
+        console.log(`Server is listening on PORT : ${process.env.PORT}`);
+    });
+})
+.catch((err) => {
+    console.log("DB CONNECTION ERROR :",err);
+});
 
 /*
 -------------------------------FIRST APPROACH-----------------------------------------------------------
